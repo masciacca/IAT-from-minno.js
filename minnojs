@@ -1,0 +1,122 @@
+
+define(['pipAPI', 'https://cdn.jsdelivr.net/gh/masciacca/IAT‑Spanish‑Language@main/Spanish%20Language%20Code.ext'], function(APIConstructor, iatExtension){
+	var API = new APIConstructor();
+
+	var posWords = API.shuffle([
+            'Amor', 'Ánimo', 'Amigo', 'Placer', 
+            'Adorar', 'Alegre', 'Amistad', 'Feliz', 
+            'Sonrisa', 'Apreciar', 'Excelente', 'Contento', 
+            'Júbilo', 'Espectacular', 'Atractivo', 'Deleite', 
+            'Emoción', 'Risa', 'Atractiva', 'Encantador', 
+            'Fabuloso', 'Glorioso', 'Agradable', 'Hermoso', 
+            'Fantástico', 'Felicidad', 'Encantadora', 'Estupendo', 
+            'Celebrar', 'Disfrutar', 'Magnífico', 'Triunfo']);
+	var negWords = API.shuffle([
+            'Abuso', 'Duelo', 'Veneno', 'Tristeza', 
+            'Dolor', 'Despreciar', 'Fracaso', 'Desagradable', 
+            'Enojado', 'Detestar', 'Horrible', 'Negativo', 
+            'Feo', 'Sucio', 'Asqueroso', 'Malvado', 
+            'Podrido', 'Molestar', 'Desastre', 'Horrendo',  
+            'Desdén', 'Terrible', 'Repugnante', 'Odio', 
+            'Humillar', 'Egoísta', 'Trágico', 'Molesto', 
+            'Odio', 'Doloroso', 'Nauseabundo', 'Asqueroso']);
+			
+	//Randomize which of the three possible stimulus sets we are going to use for the gay category
+	var gaySet = API.shuffle(['gay','lesbian','general'])[0];
+	var gayWords = ['Personas homosexuales', 'Homosexual'];
+
+	//Fill the sets of words for the gay categories, based on the gay-set condition
+	if (gaySet == 'lesbian')
+	{
+		gayWords.push('Lesbianas');
+		gayWords.push('Mujeres homosexuales');
+	}
+	else if (gaySet == 'gay')
+	{
+		gayWords.push('Gay');
+		gayWords.push('Hombres homosexuales');
+	}
+	else //General: use both terms.
+	{
+		gayWords.push('Gay');
+	}
+	
+	//Get the stimuli for the gay category (only words now)
+	var gayMedia = []; 
+	for(var iWord = 0; iWord < gayWords.length; iWord++)
+	{
+	    gayMedia.push({word:gayWords[iWord]});
+	}
+
+	return iatExtension({
+    	 attribute1 : {
+			name : 'Bueno', 
+			title : {
+				media : {word : 'Bueno'},
+				css : {color:'#0000FF','font-size':'1.8em'},
+				height : 4 
+			}, 
+			stimulusMedia : [
+				{word: posWords[0]},
+				{word: posWords[1]},
+				{word: posWords[2]},
+				{word: posWords[3]},
+				{word: posWords[4]},
+				{word: posWords[5]},
+				{word: posWords[6]},
+				{word: posWords[7]}
+			], 
+			stimulusCss : {color:'#0000FF','font-size':'2.3em'}
+		},	
+		attribute2 : {
+			name : 'Malo',
+			title : {
+				media : {word : 'Malo'},
+				css : {color:'#0000FF','font-size':'1.8em'},
+				height : 4
+			}, 
+			stimulusMedia : [
+				{word: negWords[0]},
+				{word: negWords[1]},
+				{word: negWords[2]},
+				{word: negWords[3]},
+				{word: negWords[4]},
+				{word: negWords[5]},
+				{word: negWords[6]},
+				{word: negWords[7]}
+			], 
+			stimulusCss : {color:'#0000FF','font-size':'2.3em'}
+		},
+	    category1 : {
+			name : 'Personas heterosexuales',
+			title : {
+				media : {word : 'Personas heterosexuales'},
+				css : {color:'#31940F','font-size':'1.8em'},
+				height : 4
+			},
+			stimulusMedia : [
+				{word: 'Heterosexual'},
+				{word: 'Persona heterosexual'},
+				{word: 'Personas heterosexuales'},
+				{word: 'Heterosexualidad'}
+			], 
+			stimulusCss : {color:'#31940F','font-size':'2.3em'}
+		},
+    	category2 : {
+			name : 'Personas homosexuales',
+			title : {
+				media : {word : 'Personas homosexuales'},
+				css : {color:'#31940F','font-size':'1.8em'},
+				height : 4
+			},
+			stimulusMedia : gayMedia, 
+			stimulusCss : {color:'#31940F','font-size':'2.3em'}
+		},
+		
+        base_url : {
+            image : 'https://baranan.github.io/minno-tasks/images/' // No effect now
+        },
+
+        showFeedback : false
+    });
+});
